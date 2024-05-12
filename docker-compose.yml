@@ -1,0 +1,10 @@
+name: desafio-junior-backend-simplify
+services:
+  postgres:
+    image: postgres:16.2-alpine3.19
+    ports:
+      - 5432:${DB_PORT}
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
