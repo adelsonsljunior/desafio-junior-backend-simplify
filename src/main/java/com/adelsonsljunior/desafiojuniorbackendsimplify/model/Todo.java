@@ -1,4 +1,5 @@
 package com.adelsonsljunior.desafiojuniorbackendsimplify.model;
+import com.adelsonsljunior.desafiojuniorbackendsimplify.dtos.todo.TodoCreateDTO;
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,5 +29,11 @@ public class Todo {
     public boolean done;
     @NotNull
     public int priority;
+
+    public Todo(TodoCreateDTO data) {
+        this.name = data.name();
+        this.description = data.description();
+        this.priority = data.priority();
+    }
 
 }
