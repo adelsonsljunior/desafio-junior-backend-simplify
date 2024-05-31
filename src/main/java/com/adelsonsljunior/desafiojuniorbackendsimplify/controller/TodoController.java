@@ -8,6 +8,7 @@ import com.adelsonsljunior.desafiojuniorbackendsimplify.responses.todo.ListTodoR
 import com.adelsonsljunior.desafiojuniorbackendsimplify.responses.todo.SingleTodoResponse;
 import com.adelsonsljunior.desafiojuniorbackendsimplify.service.TodoService;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<BaseResponse> create(@RequestBody TodoCreateDTO data) {
+    public ResponseEntity<BaseResponse> create(@RequestBody @Valid TodoCreateDTO data) {
 
         Todo newTodo = new Todo(data);
 
@@ -37,7 +38,7 @@ public class TodoController {
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponse> findAll(){
+    public ResponseEntity<BaseResponse> findAll() {
 
         List<Todo> todos = todoService.findAll();
 
@@ -60,7 +61,7 @@ public class TodoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<BaseResponse> update(@PathVariable Long id, @RequestBody TodoUpdateDTO data) {
+    public ResponseEntity<BaseResponse> update(@PathVariable Long id, @RequestBody @Valid TodoUpdateDTO data) {
 
         Optional<Todo> todoFound = todoService.findById(id);
 
