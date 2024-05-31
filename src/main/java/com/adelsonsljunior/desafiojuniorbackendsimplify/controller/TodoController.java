@@ -4,6 +4,7 @@ import com.adelsonsljunior.desafiojuniorbackendsimplify.dtos.todo.TodoCreateDTO;
 import com.adelsonsljunior.desafiojuniorbackendsimplify.dtos.todo.TodoUpdateDTO;
 import com.adelsonsljunior.desafiojuniorbackendsimplify.model.Todo;
 import com.adelsonsljunior.desafiojuniorbackendsimplify.responses.BaseResponse;
+import com.adelsonsljunior.desafiojuniorbackendsimplify.responses.ValidationErrorResponse;
 import com.adelsonsljunior.desafiojuniorbackendsimplify.responses.todo.ListTodoResponse;
 import com.adelsonsljunior.desafiojuniorbackendsimplify.responses.todo.SingleTodoResponse;
 import com.adelsonsljunior.desafiojuniorbackendsimplify.service.TodoService;
@@ -11,8 +12,11 @@ import com.adelsonsljunior.desafiojuniorbackendsimplify.service.TodoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +31,11 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<BaseResponse> create(@RequestBody @Valid TodoCreateDTO data) {
+    public ResponseEntity<BaseResponse> create(@RequestBody @Valid TodoCreateDTO data, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return buildValidationError(bindingResult);
+        }
 
         Todo newTodo = new Todo(data);
 
@@ -61,7 +69,11 @@ public class TodoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<BaseResponse> update(@PathVariable Long id, @RequestBody @Valid TodoUpdateDTO data) {
+    public ResponseEntity<BaseResponse> update(@PathVariable Long id, @RequestBody @Valid TodoUpdateDTO data, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return buildValidationError(bindingResult);
+        }
 
         Optional<Todo> todoFound = todoService.findById(id);
 
@@ -96,6 +108,15 @@ public class TodoController {
         todoService.delete(todoFound.get());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    private ResponseEntity<BaseResponse> buildValidationError(BindingResult bindingResult) {
+        List<String> errors = new ArrayList<>();
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            errors.add(error.getDefaultMessage());
+        }
+        BaseResponse errorResponse = new ValidationErrorResponse("Validation Errors", 400, "Bad Request", errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
 }
