@@ -33,7 +33,7 @@ public class TodoController {
 
         Todo createdTodo = todoService.create(newTodo);
 
-        BaseResponse response = new SingleTodoResponse("Todo Created Successfully", 201, createdTodo);
+        BaseResponse response = new SingleTodoResponse("Todo Created Successfully", 201, "Created", createdTodo);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -42,7 +42,7 @@ public class TodoController {
 
         List<Todo> todos = todoService.findAll();
 
-        BaseResponse response = new ListTodoResponse("Todo List", 200, todos);
+        BaseResponse response = new ListTodoResponse("Todo List", 200, "Ok", todos);
         return ResponseEntity.ok().body(response);
     }
 
@@ -52,11 +52,11 @@ public class TodoController {
         Optional<Todo> todoFound = todoService.findById(id);
 
         if (todoFound.isEmpty()) {
-            BaseResponse responseNotFound = new BaseResponse("Todo Not Found", 404);
+            BaseResponse responseNotFound = new BaseResponse("Todo Not Found", 404, "Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseNotFound);
         }
 
-        BaseResponse responseTodo = new SingleTodoResponse("Todo Found Successfully", 200, todoFound.get());
+        BaseResponse responseTodo = new SingleTodoResponse("Todo Found Successfully", 200, "Ok", todoFound.get());
         return ResponseEntity.ok(responseTodo);
     }
 
@@ -66,7 +66,7 @@ public class TodoController {
         Optional<Todo> todoFound = todoService.findById(id);
 
         if (todoFound.isEmpty()) {
-            BaseResponse responseNotFound = new BaseResponse("Todo Not Found", 404);
+            BaseResponse responseNotFound = new BaseResponse("Todo Not Found", 404, "Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseNotFound);
         }
 
@@ -79,7 +79,7 @@ public class TodoController {
 
         Todo updatedTodo = todoService.update(todo);
 
-        BaseResponse response = new SingleTodoResponse("Todo Updated Successfully", 200, updatedTodo);
+        BaseResponse response = new SingleTodoResponse("Todo Updated Successfully", 200, "Ok", updatedTodo);
         return ResponseEntity.ok(response);
     }
 
@@ -89,7 +89,7 @@ public class TodoController {
         Optional<Todo> todoFound = todoService.findById(id);
 
         if (todoFound.isEmpty()) {
-            BaseResponse responseNotFound = new BaseResponse("Todo Not Found", 404);
+            BaseResponse responseNotFound = new BaseResponse("Todo Not Found", 404, "Not Found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseNotFound);
         }
 

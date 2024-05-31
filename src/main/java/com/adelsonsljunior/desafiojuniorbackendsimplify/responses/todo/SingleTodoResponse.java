@@ -9,8 +9,8 @@ public class SingleTodoResponse extends BaseResponse {
     @JsonProperty("data")
     private Todo data;
 
-    public SingleTodoResponse(String message, int status, Todo data) {
-        super(message, status);
+    public SingleTodoResponse(String message, int code, String status, Todo data) {
+        super(message, code, status);
         this.data = data;
     }
 }

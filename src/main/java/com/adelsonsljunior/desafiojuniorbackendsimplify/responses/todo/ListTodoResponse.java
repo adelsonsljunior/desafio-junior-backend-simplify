@@ -11,8 +11,8 @@ public class ListTodoResponse extends BaseResponse {
     @JsonProperty("data")
     private List<Todo> data;
 
-    public ListTodoResponse(String message, int status, List<Todo> todos) {
-        super(message, status);
+    public ListTodoResponse(String message, int code, String status, List<Todo> todos) {
+        super(message, code, status);
         this.data = todos;
     }
 }
