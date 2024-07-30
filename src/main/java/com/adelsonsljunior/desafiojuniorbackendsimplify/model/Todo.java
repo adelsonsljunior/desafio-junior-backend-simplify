@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Getter
 @Setter
@@ -34,6 +35,17 @@ public class Todo {
         this.name = data.name();
         this.description = data.description();
         this.priority = data.priority();
+    }
+
+    public Todo(String name, String description, int priority) {
+        this.name = name;
+        this.description = description;
+        this.priority = priority;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this);
     }
 
 }
